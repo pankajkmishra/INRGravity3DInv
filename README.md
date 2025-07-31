@@ -1,2 +1,2 @@
-# SciMLGravity3DInv
-3D inversion of gravity data with scientific (physics-based) deep learning using PyTorch  
+# INRGravity3DInv
+Physics-based 3D inversion of gravity data using Deep Implicit Neural Representations
