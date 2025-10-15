@@ -1,9 +1,4 @@
-# This code shows the spectral bias of MLPs with and without positional encoding.
-# It trains two MLPs on a dataset with a localized high-frequency burst and visualizes their training process.# The results are saved as a GIF showing the evolution of the training process. 
-# We can see how positional encoding helps the MLP learn high-frequency components more effectively. 
 
-# Author: Pankaj K Mishra
-# Date: 2025-08-05
 
 import torch
 import torch.nn as nn
@@ -150,6 +145,7 @@ if __name__ == '__main__':
     imageio.mimsave(gif_path, frames, duration=0.2) # 0.1 seconds per frame
 
     print(f"Successfully created GIF: {gif_path}")
+
 
 
 
