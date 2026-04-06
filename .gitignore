@@ -1,9 +1,14 @@
-# Plot outputs
+# Generated outputs and archived experiments
 plots/
 docs/
+00/
+v0/
+
 # Python
 __pycache__/
 *.pyc
 *.pyo
+
+# Local documents
 *.docx
-*.pdf 
+*.pdf
