@@ -37,5 +37,20 @@ python .\005-NoiseSensitivity.py
 
 Each script creates figures and metrics in the `plots/` directory.
 
+## Citation
+
+Mishra, P.K., Laaksonen, S., Kamm, J. and Singh, A., 2025. Three-dimensional inversion of gravity data using implicit neural representations. arXiv preprint arXiv:2510.17876. Available at: https://doi.org/10.48550/arXiv.2510.17876.
+
+```bibtex
+@article{mishra2025inrgravity,
+	title = {Three-dimensional inversion of gravity data using implicit neural representations},
+	author = {Mishra, Pankaj K and Laaksonen, Sanni and Kamm, Jochen and Singh, Anand},
+	journal = {arXiv preprint arXiv:2510.17876},
+	year = {2025},
+	doi = {10.48550/arXiv.2510.17876},
+	url = {https://doi.org/10.48550/arXiv.2510.17876}
+}
+```
+
 
 
