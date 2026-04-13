@@ -7,10 +7,41 @@ The scripts in this repository test positional encoding, model capacity, discret
 
 ## Requirements
 
-- Python
-- `numpy`
-- `matplotlib`
-- `torch`
+- Python 3.11
+- Dependencies in `requirements.txt`
+
+## Exact Reproduction
+
+The current `001-EncodingComparisons_blocky.py` result has been tested with the following runtime:
+
+- OS: Windows 10
+- Python: 3.11.14
+- NumPy: 1.26.4
+- Matplotlib: 3.10.7
+- PyTorch: 2.9.1+cpu
+- Device: CPU (`torch.cuda.is_available() == False`)
+
+To reproduce that exact stack with Conda:
+
+```bash
+conda create -n sciml-repro python=3.11.14 pip -y
+conda activate sciml-repro
+pip install -r requirements.txt
+python .\001-EncodingComparisons_blocky.py
+```
+
+To reproduce the examples exactly, please consider using these versions.
+
+The script now prints its runtime information at startup. If a user reports a different figure, compare the printed Python, NumPy, Matplotlib, PyTorch, and device values first.
+
+Expected terminal summary for the validated CPU run:
+
+```text
+Positional Encoding RMS density-contrast error ≈ 64.20 kg/m^3
+Positional Encoding RMS data misfit ≈ 0.004 mGal | best epoch = 499 | best loss = 2.046
+Hash Encoding RMS density-contrast error ≈ 64.22 kg/m^3
+Hash Encoding RMS data misfit ≈ 0.003 mGal | best epoch = 233 | best loss = 0.999
+```
 
 ## Run
 

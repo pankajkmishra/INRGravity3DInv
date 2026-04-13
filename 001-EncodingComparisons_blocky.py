@@ -1,9 +1,11 @@
 import os
+import sys
 import time
 import random
 import numpy as np
 import torch
 import torch.nn as nn
+import matplotlib
 import matplotlib.pyplot as plt
 
 
@@ -524,9 +526,20 @@ def style_axes(ax, xlabel, ylabel):
 def encoding_label(name):
     return 'Positional Encoding' if name == 'positional' else 'Hash Encoding'
 
+
+def print_runtime_info(device):
+    print('Runtime info:')
+    print(f"  Python     = {sys.version.split()[0]}")
+    print(f"  NumPy      = {np.__version__}")
+    print(f"  Matplotlib = {matplotlib.__version__}")
+    print(f"  PyTorch    = {torch.__version__}")
+    print(f"  Device     = {device}")
+    print(f"  CUDA       = {torch.cuda.is_available()}")
+
 def run():
     set_seed(DATA_SEED)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print_runtime_info(device)
     os.makedirs('plots', exist_ok=True)
 
     dx, dy, dz = DX, DY, DZ
