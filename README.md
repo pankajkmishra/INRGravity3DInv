@@ -1,5 +1,7 @@
 
 # INRGravity3DInv
+NB: An error in the sensitivity of the forward kernel has been fixed, you can see that in the branch fix-sensitivity. I have not merged it in the main to maintain reproducibility. The fix changes some numerical values in some of the plots but does not change the conclusions.
+
 
 Python experiments for 3D gravity inversion with implicit neural representations (INRs).
 
