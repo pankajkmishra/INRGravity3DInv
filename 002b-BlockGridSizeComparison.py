@@ -129,15 +129,27 @@ def set_seed(seed):
 
 
 def a_integral_torch(x, y, z):
-    eps = 1e-20
-    radius = torch.sqrt(x**2 + y**2 + z**2).clamp_min(eps)
-    return -(x * torch.log(torch.abs(y + radius) + eps) +
-             y * torch.log(torch.abs(x + radius) + eps) -
-             z * torch.atan2(x * y, z * radius + eps))
+    # Plouff (1976) / Blakely (1995) prism primitive x log(y + r) + y log(x + r) - z arctan(x y / (z r)),
+    # returned with a minus sign as before. The arctangent is the one-argument form: atan2(x y, z r)
+    # adds a +-pi branch when z < 0, i.e. for a cell whose top lies above the receiver. The
+    # logarithms avoid the cancellation in a + r for a < 0 by using log(s2) - log(r - a).
+    r = torch.sqrt(x**2 + y**2 + z**2)
+    one = torch.ones_like(r)
+
+    def clog(c, a, s2):
+        pos = torch.log(torch.where(a >= 0, a + r, one))
+        neg = torch.where(s2 > 0, torch.log(torch.where(s2 > 0, s2, one)), torch.zeros_like(r)) - \
+            torch.log(torch.where(a < 0, r - a, one))
+        return torch.where(c == 0, torch.zeros_like(r), c * torch.where(a >= 0, pos, neg))
+
+    zsafe = torch.where(z == 0, one, z)
+    t3 = torch.where(z == 0, torch.zeros_like(r), z * torch.atan(x * y / (zsafe * r)))
+    return -(clog(x, y, x**2 + z**2) + clog(y, x, y**2 + z**2) - t3)
 
 
 @torch.inference_mode()
 def construct_sensitivity_matrix_G(cell_grid, data_points, dx, dy, device):
+    cell_grid, data_points = cell_grid.double(), data_points.double()   # assemble in float64
     gamma = 6.67430e-11
     cx = cell_grid[:, 0].unsqueeze(0)
     cy = cell_grid[:, 1].unsqueeze(0)
@@ -155,7 +167,7 @@ def construct_sensitivity_matrix_G(cell_grid, data_points, dx, dy, device):
          a_integral_torch(x2, y1, z2) + a_integral_torch(x2, y1, z1) -
          a_integral_torch(x1, y2, z2) + a_integral_torch(x1, y2, z1) +
          a_integral_torch(x1, y1, z2) - a_integral_torch(x1, y1, z1))
-    return (gamma * a).to(device)
+    return (gamma * a).to(torch.float32).to(device)
 
 
 def make_block_model(x, y, z, rho_bg=0.0, rho_blk=400.0):
@@ -274,7 +286,7 @@ def solve_case(label, cell_size, device, cfg):
     cell_grid = torch.tensor(cell_grid, dtype=torch.float32, device=device)
 
     xx_obs, yy_obs = np.meshgrid(x, y, indexing='ij')
-    obs_points = np.column_stack([xx_obs.ravel(), yy_obs.ravel(), -np.ones(xx_obs.size)])
+    obs_points = np.column_stack([xx_obs.ravel(), yy_obs.ravel(), np.full(xx_obs.size, -(dz / 2.0 + 1.0))])
     obs = torch.tensor(obs_points, dtype=torch.float32, device=device)
 
     print(f'\nGrid {label}: dx = dy = dz = {cell_size:.1f} m')

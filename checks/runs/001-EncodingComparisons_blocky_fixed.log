@@ -1,0 +1,19 @@
+Seed = 42
+Runtime info:
+  Python     = 3.11.14
+  NumPy      = 1.26.4
+  Matplotlib = 3.10.7
+  PyTorch    = 2.9.1+cpu
+  Device     = cpu
+  CUDA       = False
+Assembling sensitivity G ...
+G shape = (441, 4851), time = 0.30s
+Traceback (most recent call last):
+  File "C:\Users\pmishra\OneDrive - Valtori GTK\Documents\Mac\JInv\external\INRGravity3DInv\001-EncodingComparisons_blocky.py", line 771, in <module>
+    run()
+  File "C:\Users\pmishra\OneDrive - Valtori GTK\Documents\Mac\JInv\external\INRGravity3DInv\001-EncodingComparisons_blocky.py", line 613, in run
+    print(f"\n\u25b6  Encoding strategy: {encoding_type}")
+  File "C:\Users\pmishra\AppData\Local\miniconda3\envs\sciml\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25b6' in position 2: character maps to <undefined>
